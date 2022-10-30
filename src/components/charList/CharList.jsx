@@ -11,7 +11,10 @@ class CharList extends Component {
 	state = {
 		charList: [],
 		loading: true,
-		error: false
+		error: false,
+		offset: 210,
+		loadingMore: false,
+		charEnded: false
 	}
 
 	marvelService = new MarvelService();
@@ -20,26 +23,41 @@ class CharList extends Component {
 		this.updateCharList()
 	}
 
-	onLoadedList = (charList) => {
-		this.setState({ charList, loading: false })
+	onLoadedList = (newCharList) => {
+		let end = false;
+		if (newCharList.length < 9) end = true;
+
+		this.setState(({ charList, offset }) => ({
+			charList: [...charList, ...newCharList],
+			loading: false,
+			loadingMore: false,
+			offset: offset + 9,
+			charEnded: end
+		}))
 	}
 
 	onError = () => {
 		this.setState({ loading: false, error: true })
 	}
 
-	updateCharList = () => {
-		this.setState({ loading: true, error: false })
+	updateCharList = (offset) => {
+		this.setState({ error: false })
 		this.marvelService
-			.getAllCharacters()
+			.getAllCharacters(offset)
 			.then(this.onLoadedList)
 			.catch(this.onError)
+	}
+
+	onRequestMoreChar = (offset) => {
+		this.setState({ loadingMore: true })
+		this.updateCharList(offset)
 	}
 
 	renderList(charList) {
 		const stucture = charList.map(elem => {
 			let imgStyle = { 'objectFit': 'cover' };
-			if (elem.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+			if (elem.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ||
+				elem.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif') {
 				imgStyle = { 'objectFit': 'unset' };
 			}
 			return (
@@ -61,22 +79,28 @@ class CharList extends Component {
 	}
 
 	render() {
-		const { charList, loading, error } = this.state;
+		const { charList, loading, error, offset, loadingMore, charEnded } = this.state;
 
 		const stucture = this.renderList(charList)
 
 		const errorMessage = error ? <ErrorMessage /> : null;
 		const spinner = loading ? <Spinner /> : null;
-		const content = !(loading || error) ? stucture : null
+		const content = !(loading || error) ? stucture : null;
 
 		return (
 			<div className="char__list">
 				{errorMessage}
 				{spinner}
 				{content}
-				<button className="button button__main button__long">
-					<div className="inner">load more</div>
-				</button>
+
+				{loadingMore ? <Spinner /> :
+					<button
+						style={charEnded ? { 'display': 'none' } : { 'display': 'block' }}
+						className="button button__main button__long"
+						onClick={() => this.onRequestMoreChar(offset)}>
+						<div className="inner">load more</div>
+					</button>
+				}
 			</div>
 		)
 	}
