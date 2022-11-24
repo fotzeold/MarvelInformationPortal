@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -8,7 +9,7 @@ import './comicsList.scss';
 
 const ComicsList = () => {
 	const [comicsList, setComicsList] = useState([]);
-	const [offset, setOffset] = useState(10);
+	const [offset, setOffset] = useState(Math.round(Math.random() * (500 - 10) + 10));
 	const [loadingMore, setLoadingMore] = useState(false);
 
 	const { loading, error, clearError, getAllComics } = useMarvelService();
@@ -39,12 +40,12 @@ const ComicsList = () => {
 				{
 					comicsList.map((elem, i) => {
 						return (
-							<li key={elem.id} className="comics__item">
-								<a href="">
+							<li key={elem.id + i} className="comics__item">
+								<Link to={`/comics/${elem.id}`}>
 									<img src={elem.thumbnail} alt={elem.title} className="comics__item-img" />
 									<div className="comics__item-name">{elem.title}</div>
-									<div className="comics__item-price">{elem.price + '$'}</div>
-								</a>
+									<div className="comics__item-price">{elem.price == '0' ? 'NOT AVAILABLE' : elem.price + '$'}</div>
+								</Link>
 							</li>
 						)
 					})

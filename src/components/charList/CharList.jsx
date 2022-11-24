@@ -10,7 +10,7 @@ import './charList.scss';
 const CharList = (props) => {
 
 	const [charList, setCharList] = useState([]),
-		[offset, setOffset] = useState(210),
+		[offset, setOffset] = useState(Math.round(Math.random() * (500 - 210) + 210)),
 		[loadingMore, setLoadingMore] = useState(false),
 		[charEnded, setCharEnded] = useState(false);
 
