@@ -1,9 +1,9 @@
-@import '../../style/variables.scss';
+@import '../../../style/variables.scss';
 
 .single-comic {
     margin-top: 50px;
     display: grid;
-    grid-template-columns: 293px 550px auto;
+    grid-template-columns: 293px 530px auto;
     column-gap: 50px;
     align-items: start;
     &__img {
@@ -28,6 +28,7 @@
         margin-top: 25px;
     }
     &__back {
+		  padding-right: 8px;
         justify-self: end;
         font-weight: bold;
         font-size: 18px;

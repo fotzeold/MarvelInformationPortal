@@ -7,7 +7,7 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './comicsList.scss';
 
-const ComicsList = () => {
+const ComicsList = (props) => {
 	const [comicsList, setComicsList] = useState([]);
 	const [offset, setOffset] = useState(Math.round(Math.random() * (500 - 10) + 10));
 	const [loadingMore, setLoadingMore] = useState(false);
@@ -15,7 +15,8 @@ const ComicsList = () => {
 	const { loading, error, clearError, getAllComics } = useMarvelService();
 
 	useEffect(() => {
-		onRequest(offset, false)
+		onRequest(offset, false);
+		props.setHref('/comics');
 	}, [])
 
 	const onLoadedComics = (data) => {

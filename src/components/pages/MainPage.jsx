@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
@@ -7,8 +7,12 @@ import ErrorBoundary from '../errorBoundery/ErrorBoundery';
 
 import decoration from '../../resources/img/vision.png';
 
-const MainPage = () => {
+const MainPage = (props) => {
 	const [selectedChar, setSelectedChar] = useState(null);
+
+	useEffect(() => {
+		props.setHref('/')
+	},[])
 
 	const onCharSelected = (id) => {
 		setSelectedChar(id)

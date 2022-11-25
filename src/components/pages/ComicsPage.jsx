@@ -1,11 +1,11 @@
 import AppBanner from '../appBanner/AppBanner';
 import ComicsList from '../comicsList/ComicsList';
 
-const ComicsPage = () => {
+const ComicsPage = (props) => {
 	return (
 		<>
 			<AppBanner></AppBanner>
-			<ComicsList></ComicsList>
+			<ComicsList setHref={props.setHref}></ComicsList>
 		</>
 	)
 }

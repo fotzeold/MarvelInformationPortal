@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import './charInfo.scss';
 
@@ -87,10 +88,11 @@ const ListComics = ({ char }) => {
 			<ul className="char__comics-list">
 				{
 					comics.slice(0, 14).map((elem, index) => {
+						const comicId = elem.resourceURI.slice(43, elem.resourceURI.length);
 						return (
-							<li key={index} className="char__comics-item">
+							<Link to={`/comics/${comicId}`} key={index} className="char__comics-item">
 								{elem.name}
-							</li>
+							</Link>
 						)
 					})
 				}
